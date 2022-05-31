@@ -6,8 +6,8 @@ build:
 
 .PHONY: link
 link:
-	ln -sf ./valgrind.sh /usr/local/bin/
+	ln -sf $(PWD)/valgrind.sh /usr/local/bin/valgrind
 
 .PHONY: link-cluster
 link-cluster:
-	ln -sf ./valgrind.sh $(shell brew --prefix)/bin/
+	ln -sf $(PWD)/valgrind.sh $(shell brew --prefix)/bin/valgrind

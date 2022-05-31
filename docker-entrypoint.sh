@@ -21,6 +21,9 @@ while [[ $# -gt 0 ]]; do
 done
 
 eval $BUILD_CMD
+if [[ $? -gt 0 ]]; then
+  exit $?
+fi
 
 if [[ "$1" == "./"* ]]; then
   isSanitize=$(nm -an "$1" | grep "asan")

@@ -2,7 +2,13 @@ VALGRIND_IMAGE=seushin/valgrind
 
 LINK_SOURCE=$(PWD)/valgrind.sh
 LINK_TARGET=/usr/local/bin/valgrind
-CLUS_TARGET=$(shell brew --prefix)/bin/valgrind
+CLUSTER_BIN_PATH=$(PWD)/bin/
+
+.PHONY: all
+all: build link
+
+.PHONY: cluster
+cluster: build link-cluster
 
 .PHONY: build
 build:
@@ -13,7 +19,7 @@ clean:
 	docker rmi -f \
 		$(shell docker images --filter=reference='$(VALGRIND_IMAGE)' --quiet)
 	$(RM) $(LINK_TARGET) 2> /dev/null
-	$(RM) $(CLUS_TARGET) 2> /dev/null
+	$(RM) $(CLUSTER_BIN_PATH)/valgrind 2> /dev/null
 
 .PHONY: link
 link:
@@ -21,4 +27,6 @@ link:
 
 .PHONY: link-cluster
 link-cluster:
-	ln -sf $(LINK_SOURCE) $(CLUS_TARGET)
+	mkdir -p $(CLUSTER_BIN_PATH)
+	ln -sf $(LINK_SOURCE) $(CLUSTER_BIN_PATH)/valgrind
+	echo 'export PATH="$$PATH:$(CLUSTER_BIN_PATH)"' >> $(HOME)/.zshrc

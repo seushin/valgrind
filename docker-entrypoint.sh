@@ -27,7 +27,7 @@ fi
 
 if [[ "$1" == "./"* ]]; then
   isSanitize=$(nm -an "$1" | grep "asan")
-  if [[ $? -eq 0 ]]; then
+  if [[ -n "$isSanitize" ]]; then
     printf "error: must be compile without '-fsanitize'\n"
     exit 1
   fi
